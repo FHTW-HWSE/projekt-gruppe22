@@ -1,0 +1,11 @@
+Welcome to the Doctor's Office Management System!
+Please select an option:
+1. Search for a patient
+2. Edit patient information
+3. Add a patient
+4. Add a patient to the queue
+5. View patient queue
+6. Assign a seat to a patient
+7. Display seating arrangement
+8. Exit
+Enter your choice: 
