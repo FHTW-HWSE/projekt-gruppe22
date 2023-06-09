@@ -1,102 +1,109 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "patient.h"
 #include "queue.h"
 #include "menu.h"
 #include "switchcase.h"
+#include "searchPatient.h"
+#include "editPatient.h"
 
-void loadPatients();
-void savePatients();
-void loadQueue();
-void saveQueue();
-void displayMenu();
 
 void switchcase() {
     int choice;
-    int c;
 
     do {
         displayMenu();
-        printf("Enter your choice: ");
+        printf("\nEnter your choice (0-7): ");
 
-        // Read characters until newline character is encountered
-        while ((c = getchar()) != '\n' && c != EOF) {
-            // Convert character to integer
-            if (c >= '0' && c <= '9') {
-                choice = c - '0';
-                break;
-            }
+        // Read an integer value using scanf
+        if (scanf("%d", &choice) != 1) {
+            printf("\nInvalid input. Please try again (0-7).\n");
+            while (getchar() != '\n'); // Clear remaining input
+            continue;
         }
 
-        if (c == EOF) {
-            printf("Error reading input.\n");
-            return;
+        // Clear remaining input if necessary
+        while (getchar() != '\n');
+
+        if (choice < 0 || choice > 7) {
+            printf("\nInvalid input. Please try again (0-7).\n");
+            continue;
         }
 
         switch (choice) {
             case 1:
-                searchPatient();
+                if (searchPatient(patients, numPatients)) {
+                    printf("\nPress Enter to continue...");
+                    getchar(); // Wait for the user to press Enter
+                }
                 break;
             case 2:
-                addNewPatient();
+                addPatient();
+				savePatients(); //never forgetti
+                printf("\nPress Enter to continue...");
+                getchar(); // Wait for the user to press Enter
                 break;
             case 3:
-                addPatientToQueue();
+                if (editPatient(patients, numPatients)) {
+                    printf("Patient information updated.\n");
+                }
+				savePatients(); //savesavesave
+                printf("\nPress Enter to continue...");
+                getchar(); // Wait for the user to press Enter
                 break;
             case 4:
-                showWaitingQueue();
+                addPatientToQueue();
+                printf("\nPress Enter to continue...");
+                getchar(); // Wait for the user to press Enter
                 break;
             case 5:
-                dequeuePatient();
+                showQueue();
+                printf("\nPress Enter to continue...");
+                getchar(); // Wait for the user to press Enter
                 break;
-            case 6:
-                markPatientAsClear();
+            case 6: {
+                char insuranceNumber[20];
+                printf("Enter the insurance number of the patient to dequeue: ");
+                scanf("%s", insuranceNumber);
+                dequeuePatient(insuranceNumber);
+                printf("\nPress Enter to continue...");
+                getchar(); // Wait for the user to press Enter
                 break;
+            }
             case 7:
-                showSeatingArrangement();
-                break;
-            case 8:
-                editPatient();
+                printf("\nShow Seating Arrangement\n");
+                printf("\nPress Enter to continue...");
+                getchar(); // Wait for the user to press Enter
                 break;
             case 0:
-                printf("Exiting program.\n");
+                printf("\nExiting program.\n");
+				savePatients(); //save
+                exit(0);
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");
                 break;
         }
-    } while (choice != 0);
+    } while (1);
 }
 
-// Tests
-void searchPatient() {
-    printf("Search Patient\n");
+/* void addPatientToQueue() {
+    printf("\nAdd Patient to Queue\n");
 }
+*/
 
-void addNewPatient() {
-    printf("Add New Patient\n");
+/*void showQueue() {
+    printf("\nShow Waiting Queue\n");
 }
+*/
 
-void addPatientToQueue() {
-    printf("Add Patient to Queue\n");
+/*void dequeuePatient() {
+    printf("\nDequeue Patient\n");
 }
+*/
 
-void showWaitingQueue() {
-    printf("Show Waiting Queue\n");
-}
-
-void dequeuePatient() {
-    printf("Dequeue Patient\n");
-}
-
-void markPatientAsClear() {
-    printf("Mark Patient as Clear\n");
-}
-
-void showSeatingArrangement() {
-    printf("Show Seating Arrangement\n");
-}
-
-void editPatient() {
-    printf("Edit Patient\n");
+void assignSeatToPatient() {
+    printf("\nShow Seating Arrangement\n");
 }

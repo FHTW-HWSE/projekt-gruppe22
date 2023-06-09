@@ -1,14 +1,18 @@
+#include <stdbool.h>
+
 #ifndef SWITCHCASE_H
 #define SWITCHCASE_H
 
-void switchcase();
-void searchPatient();
-void addNewPatient();
+void loadPatients();
+void savePatients();
+void loadQueue();
+void saveQueue();
+void displayMenu();
+bool editPatient();
+bool searchPatient();
 void addPatientToQueue();
-void showWaitingQueue();
-void dequeuePatient();
-void markPatientAsClear();
-void showSeatingArrangement();
-void editPatient();
+void showQueue();
+bool dequeuePatient();
+void assignSeat();
 
 #endif /* SWITCHCASE_H */

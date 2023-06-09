@@ -15,10 +15,13 @@ typedef struct {
     float weight;
 } Patient;
 
-extern Patient patients[MAX_PATIENTS];
+extern Patient* patients;
 extern int numPatients;
 
 void loadPatients();
 void savePatients();
+void cleanup();
+void addPatient();
 
 #endif /* PATIENT_H */
+
