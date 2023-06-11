@@ -12,13 +12,11 @@ typedef struct {
 
 WaitingRoom* createWaitingRoom();
 void destroyWaitingRoom(WaitingRoom* room);
-void loadWaitingRoom(WaitingRoom* room, Patient* patients);
+void loadWaitingRoom(WaitingRoom* room);
 void saveWaitingRoom(const WaitingRoom* room);
-//void enqueue(WaitingRoom* room, Patient* patient);
-void printWaitingRoom(const WaitingRoom* room);
-void addPatientToWaitingRoom(WaitingRoom* room);
-bool dequeuePatientFromWaitingRoom(WaitingRoom* room, const char* insuranceNumber);
 void enqueue(WaitingRoom* room, Patient* patient);
+void printWaitingRoom(const WaitingRoom* room);
 bool isWaitingRoomFull(const WaitingRoom* room);
+bool removePatientFromSeat(const char* insuranceNumber, WaitingRoom* room);
 
 #endif // WAITINGROOM_H

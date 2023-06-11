@@ -9,15 +9,23 @@
 #include "searchPatient.h"
 #include "editPatient.h"
 #include "waitingRoom.h"
+#include "SearchPatientbyInsurance.h"
 
 void switchcase() {
     int choice;
+
+    WaitingRoom* waitingRoom = createWaitingRoom();
+    if (waitingRoom == NULL) {
+        printf("Failed to allocate memory for the waiting room.\n");
+        exit(1);
+    }
+    
+    loadWaitingRoom(waitingRoom);
 
     do {
         displayMenu();
         printf("\nEnter your choice (0-8): ");
 
-        // Read an integer value using scanf
         if (scanf("%d", &choice) != 1) {
             printf("\nInvalid input. Please try again (0-8).\n");
             while (getchar() != '\n'); // Clear remaining input
@@ -65,36 +73,52 @@ void switchcase() {
                 break;
             case 6: {
                 char insuranceNumber[20];
-                printf("Enter the insurance number of the patient to dequeue: ");
+                printf("Enter the insurance number: ");
                 scanf("%s", insuranceNumber);
-                dequeuePatient(insuranceNumber);
+                getchar();  // Consume newline character
+                Patient* patient = searchPatientbyInsurance(patients, numPatients, insuranceNumber);
+                if (patient != NULL) {
+                    enqueue(waitingRoom, patient);
+                    saveWaitingRoom(waitingRoom);
+                } 
+                
                 printf("\nPress Enter to continue...");
                 getchar(); // Wait for the user to press Enter
                 break;
             }
             case 7: {
-                
-                /*printf("Enter the insurance number of the patient to assign a seat: ");
-                scanf("%s", insuranceNumber);*/
-				//if (searchPatientbyInsurance(patients, numPatients)) {
-				//addPatientToWaitingRoom();
-				//}
-				//else {
-                //    printf("Patient not found.\n");
-                //}
+                printWaitingRoom(waitingRoom);
                 printf("\nPress Enter to continue...");
                 getchar(); // Wait for the user to press Enter
                 break;
-                
             }
-            /*case 8:
-				printWaitingRoom(waitingRoom);
+            case 8: {
+                char insuranceNumber[20];
+                printf("Enter the insurance number of the patient to dequeue: ");
+                scanf("%s", insuranceNumber);
+                getchar();
+
+                if (dequeuePatient(insuranceNumber, waitingRoom)) {
+                    if (removePatientFromSeat(insuranceNumber, waitingRoom)) {
+                        saveWaitingRoom(waitingRoom);
+                        printf("Patient with insurance number %s has been removed from the waiting room.\n", insuranceNumber);
+                    } else {
+                        printf("Patient with insurance number %s not found in the waiting room.\n", insuranceNumber);
+                    }
+                } else {
+                    printf("Patient with insurance number %s not found in the queue.\n", insuranceNumber);
+                }
+
                 printf("\nPress Enter to continue...");
                 getchar(); // Wait for the user to press Enter
-                break;*/
+                break;
+            }
             case 0:
                 printf("\nExiting program.\n");
                 savePatients();
+                saveWaitingRoom(waitingRoom);
+                saveQueue();
+                destroyWaitingRoom(waitingRoom); // Deallocate memory for waiting room
                 exit(0);
                 break;
             default:

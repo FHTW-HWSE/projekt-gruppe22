@@ -6,46 +6,67 @@
 #include "waitingRoom.h"
 #include "searchPatient.h"
 #include "SearchPatientbyInsurance.h"
+#include "queue.h"
 
 WaitingRoom waitingRoom;
 
-void loadWaitingRoom(WaitingRoom* room, Patient* patients) {
+WaitingRoom* createWaitingRoom() {
+    WaitingRoom* room = (WaitingRoom*)malloc(sizeof(WaitingRoom));
+    if (room != NULL) {
+        memset(room->patients, 0, sizeof(room->patients));
+    }
+    return room;
+}
+
+void destroyWaitingRoom(WaitingRoom* room) {
+    if (room != NULL) {
+        for (int row = 0; row < WAITING_ROOM_ROWS; row++) {
+            for (int col = 0; col < WAITING_ROOM_COLS; col++) {
+                Patient* patient = room->patients[row][col];
+                if (patient != NULL) {
+                    free(patient);
+                }
+            }
+        }
+        free(room);
+    }
+}
+
+void loadWaitingRoom(WaitingRoom* room) {
     FILE* file = fopen("waiting_room.csv", "r");
     if (file == NULL) {
         printf("Error opening waiting_room.csv file.\n");
         return;
     }
 
-    // Clear the waiting room array before loading the data
     memset(room->patients, 0, sizeof(room->patients));
 
     char line[256];
     int row = 0;
     int col = 0;
     while (fgets(line, sizeof(line), file) != NULL) {
-        // Remove newline character from the line
         line[strcspn(line, "\n")] = '\0';
 
-        // Add the patient to the waiting room
-        Patient* patient = searchPatientbyInsurance(patients);
-        if (patient != NULL) {
-            room->patients[row][col] = patient;
-            col++;
-            if (col == WAITING_ROOM_COLS) {
-                col = 0;
-                row++;
-                if (row == WAITING_ROOM_ROWS) {
-                    break;  // Reached maximum waiting room capacity
-                }
+        Patient* patient = (Patient*)malloc(sizeof(Patient));
+        if (patient == NULL) {
+            printf("Error allocating memory for the patient.\n");
+            break;
+        }
+        strcpy(patient->insuranceNumber, line);
+        room->patients[row][col] = patient;
+
+        col++;
+        if (col == WAITING_ROOM_COLS) {
+            col = 0;
+            row++;
+            if (row == WAITING_ROOM_ROWS) {
+                break;
             }
         }
     }
 
     fclose(file);
 }
-
-
-
 
 void saveWaitingRoom(const WaitingRoom* room) {
     FILE* file = fopen("waiting_room.csv", "w");
@@ -58,7 +79,8 @@ void saveWaitingRoom(const WaitingRoom* room) {
         for (int col = 0; col < WAITING_ROOM_COLS; col++) {
             Patient* patient = room->patients[row][col];
             if (patient != NULL) {
-                fprintf(file, "%s\n", patient->insuranceNumber);
+                printf("Saving patient at row %d, column %d\n", row, col); // Debug statement
+                fprintf(file, "%d,%d,%s\n", row, col, patient->insuranceNumber);
             }
         }
     }
@@ -66,7 +88,8 @@ void saveWaitingRoom(const WaitingRoom* room) {
     fclose(file);
 }
 
-void enqueue(WaitingRoom* room, Patient* patients) {
+
+void enqueue(WaitingRoom* room, Patient* patient) {
     if (isWaitingRoomFull(room)) {
         printf("Cannot add more patients to the waiting room. Maximum capacity reached.\n");
         return;
@@ -80,15 +103,13 @@ void enqueue(WaitingRoom* room, Patient* patients) {
                     printf("Error allocating memory for the patient.\n");
                     return;
                 }
-                memcpy(room->patients[row][col], patients, sizeof(Patient));
+                memcpy(room->patients[row][col], patient, sizeof(Patient));
+                printf("Patient with insurance number %s added to the waiting room.\n", patient->insuranceNumber);
                 return;
             }
         }
     }
 }
-
-
-
 
 void printWaitingRoom(const WaitingRoom* room) {
     printf("Waiting room:\n");
@@ -96,7 +117,7 @@ void printWaitingRoom(const WaitingRoom* room) {
         for (int col = 0; col < WAITING_ROOM_COLS; col++) {
             Patient* patient = room->patients[row][col];
             if (patient != NULL) {
-                printf("%d,%d: %s %s\n", row + 1, col + 1, patient->firstName, patient->lastName);
+                printf("Row: %d, Column %d: %s %s %s\n", row + 1, col + 1, patient->insuranceNumber, patient->firstName, patient->lastName);
             }
         }
     }
@@ -113,34 +134,19 @@ bool isWaitingRoomFull(const WaitingRoom* room) {
     return true;
 }
 
-
-/*void addPatientToWaitingRoom(WaitingRoom* room) {
-    char insuranceNumber[20];
-    printf("Enter the insurance number of the patient to add to the waiting room: ");
-    scanf("%s", insuranceNumber);
-
-    Patient* patient = searchPatientbyInsurance(insuranceNumber);
-    if (patient == NULL) {
-        printf("Patient not found.\n");
-        return;
-    }
-
-    enqueue(room, patient);
-    saveWaitingRoom(room);  // Save the updated waiting room to file
-}
-
-bool dequeuePatientFromWaitingRoom(WaitingRoom* room, const char* insuranceNumber) {
+bool removePatientFromSeat(const char* insuranceNumber, WaitingRoom* room) {
     for (int row = 0; row < WAITING_ROOM_ROWS; row++) {
         for (int col = 0; col < WAITING_ROOM_COLS; col++) {
             Patient* patient = room->patients[row][col];
             if (patient != NULL && strcmp(patient->insuranceNumber, insuranceNumber) == 0) {
+                free(patient);
                 room->patients[row][col] = NULL;
-                saveWaitingRoom(room);  // Save the updated waiting room to file
+                //printf("Patient with insurance number %s has been removed from the waiting room.\n", insuranceNumber);
                 return true;
             }
         }
     }
 
+    printf("Patient with insurance number %s not found in the waiting room.\n", insuranceNumber);
     return false;
 }
-*/

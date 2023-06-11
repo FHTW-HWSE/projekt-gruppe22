@@ -3,7 +3,8 @@
 
 #include "patient.h"
 
-Patient* searchPatientbyInsurance(Patient* patients, const char* insuranceNumber);
+//Patient* searchPatientbyInsurance(Patient* patients, const char* insuranceNumber);
+Patient* searchPatientbyInsurance(Patient* patients, int numPatients, const char* insuranceNumber);
 
 
-#endif /* SearchPatient_H */
+#endif /* SearchPatientbyInsurance_H */

@@ -20,9 +20,9 @@ void displayMenu() {
     printf("3.  Edit patient information\n");
     printf("4.  Add a patient to the queue\n");
     printf("5.  View patient queue\n");
-    printf("6.  Dequeue Patient\n");
-    printf("7.  Assign Seat to a Patient\n");
-    printf("8.  Show Seating Arrangement\n");
+	printf("6.  Assign Seat to a Patient\n");
+	printf("7.  Show Seating Arrangement\n");
+    printf("8.  Dequeue Patient\n");
     printf("0.  Exit\n");
     fflush(stdout); // Ensure the output is flushed immediately
 }
