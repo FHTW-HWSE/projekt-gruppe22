@@ -5,6 +5,7 @@
 #include "queue.h"
 #include "menu.h"
 #include "switchcase.h"
+#include "waitingRoom.h"
 
 
 char queue[MAX_QUEUE_SIZE][20];
@@ -102,7 +103,11 @@ void showQueue() {
     }
 }
 
-bool dequeuePatient(const char* insuranceNumber) {
+bool dequeuePatient(char* insuranceNumber) {
+	
+    printf("Enter the insurance number of the patient to dequeue: ");
+    scanf("%s", insuranceNumber);
+	
     if (queueSize == 0) {
         printf("Queue is empty. No patients to dequeue.\n");
         return false;

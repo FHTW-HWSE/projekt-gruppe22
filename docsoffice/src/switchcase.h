@@ -14,5 +14,7 @@ void addPatientToQueue();
 void showQueue();
 bool dequeuePatient();
 void assignSeat();
+bool searchPatientByInsurance();
+
 
 #endif /* SWITCHCASE_H */

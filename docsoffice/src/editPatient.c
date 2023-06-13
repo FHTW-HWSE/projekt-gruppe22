@@ -28,6 +28,10 @@ bool editPatient(Patient* patients, int numPatients) {
             printf("Current Street: %s\n", patients[i].street);
             printf("Enter new Street: ");
             scanf("%s", patients[i].street);
+			
+			printf("Current Streetnumber: %s\n", patients[i].streetno);
+			printf("Enter new Streetnumber: ");
+			scanf("%s", patients[i].streetno);
 
             printf("Current Zip Code: %s\n", patients[i].zipCode);
             printf("Enter new Zip Code: ");
@@ -37,12 +41,12 @@ bool editPatient(Patient* patients, int numPatients) {
             printf("Enter new City: ");
             scanf("%s", patients[i].city);
 
-            printf("Current Height: %.2f\n", patients[i].height);
-            printf("Enter new Height: ");
+            printf("Current Height in cm: %.2f\n", patients[i].height);
+            printf("Enter new Height in cm: ");
             scanf("%f", &patients[i].height);
 
-            printf("Current Weight: %.2f\n", patients[i].weight);
-            printf("Enter new Weight: ");
+            printf("Current Weight in kg: %.2f\n", patients[i].weight);
+            printf("Enter new Weight in kg: ");
             scanf("%f", &patients[i].weight);
 
             printf("Patient information updated.\n");

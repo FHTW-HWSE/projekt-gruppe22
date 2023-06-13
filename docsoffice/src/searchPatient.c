@@ -21,6 +21,7 @@ bool searchPatient(Patient* patients, int numPatients) {
             printf("Last Name: %s\n", patients[i].lastName);
             printf("Birthdate: %s\n", patients[i].birthdate);
             printf("Street: %s\n", patients[i].street);
+			printf("Streetnumber: %s\n", patients[i].streetno);
             printf("Zip Code: %s\n", patients[i].zipCode);
             printf("City: %s\n", patients[i].city);
             printf("Height: %.2f\n", patients[i].height);

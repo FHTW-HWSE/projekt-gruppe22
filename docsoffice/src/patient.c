@@ -5,6 +5,7 @@
 #include "patient.h"
 #include "menu.h"
 #include "switchcase.h"
+#include "waitingRoom.h"
 
 Patient* patients = NULL;
 int numPatients = 0;
@@ -55,6 +56,9 @@ void loadPatients() {
 
         token = strtok(NULL, ",");
         strcpy(tempPatients[i].street, token);
+		
+		token = strtok(NULL, ",");
+		strcpy(tempPatients[i].streetno, token);
 
         token = strtok(NULL, ",");
         strcpy(tempPatients[i].zipCode, token);
@@ -98,12 +102,13 @@ void savePatients() {
     }
 
     for (int i = 0; i < numPatients; i++) {
-        fprintf(file, "%s,%s,%s,%s,%s,%s,%s,%.2f,%.2f\n",
+        fprintf(file, "%s,%s,%s,%s,%s,%s,%s,%s,%.2f,%.2f\n",
             patients[i].insuranceNumber,
             patients[i].firstName,
             patients[i].lastName,
             patients[i].birthdate,
             patients[i].street,
+			patients[i].streetno,
             patients[i].zipCode,
             patients[i].city,
             patients[i].height,
@@ -138,34 +143,46 @@ void addPatient() {
     printf("Please enter the patient's details:\n");
     printf("Insurance Number (xxxxddmmyy): ");
     scanf("%s", patients[numPatients].insuranceNumber);
+    getchar(); // Consume newline character
 
     printf("First Name: ");
     scanf("%s", patients[numPatients].firstName);
+    getchar(); // Consume newline character
 
     printf("Last Name: ");
     scanf("%s", patients[numPatients].lastName);
+    getchar(); // Consume newline character
 
-    printf("Birthdate (yyyy-mm-dd): ");
+    printf("Birthdate (ddmmyyyy): ");
     scanf("%s", patients[numPatients].birthdate);
+    getchar(); // Consume newline character
 
-    printf("Street and number: ");
+    printf("Street (without number): ");
     scanf("%s", patients[numPatients].street);
+    getchar(); // Consume newline character
+	
+	printf("Streetnumber: ");
+	scanf("%s", patients[numPatients].streetno);
+	getchar();
 
     printf("Zip Code: ");
     scanf("%s", patients[numPatients].zipCode);
+    getchar(); // Consume newline character
 
     printf("City: ");
     scanf("%s", patients[numPatients].city);
+    getchar(); // Consume newline character
 
     printf("Height in cm: ");
     scanf("%f", &patients[numPatients].height);
+    getchar(); // Consume newline character
 
-    printf("Weight in cm: ");
+    printf("Weight in kg: ");
     scanf("%f", &patients[numPatients].weight);
+    getchar(); // Consume newline character
 
     numPatients++;
     printf("Patient added successfully.\n");
-	
 }
 
 

@@ -9,6 +9,7 @@ typedef struct {
     char lastName[50];
     char birthdate[20];
     char street[50];
+	char streetno[20];
     char zipCode[10];
     char city[50];
     float height;
@@ -17,11 +18,13 @@ typedef struct {
 
 extern Patient* patients;
 extern int numPatients;
+extern int maxPatients;
 
 void loadPatients();
 void savePatients();
 void cleanup();
 void addPatient();
+
 
 #endif /* PATIENT_H */
 
