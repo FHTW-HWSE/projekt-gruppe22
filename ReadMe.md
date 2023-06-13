@@ -9,7 +9,7 @@ The implemented and tested functions are everything but waitingRoom.c and waitin
 
 In the playground folder there are numerous tests. Most of the tests are located in the folder docsoffice/playground/finalTests and /pat_queue.  
 
-ToDo: User-Login doesnt work after restart (only hardcoded admin). File saves with blank line as well. / Seating arrangement and priority call. / Bugfix: Rows and Colums get always written into .csv again. / Delete patient.
+ToDo: User-Login doesnt work after restart (only hardcoded admin). Therefore loadUsers() is not in the main atm. File saves with blank line as well. / Seating arrangement and priority call. / Bugfix: Rows and Colums get always written into .csv again. / Delete patient.
 
 Requirements:
 
